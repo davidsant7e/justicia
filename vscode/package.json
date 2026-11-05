@@ -1,0 +1,39 @@
+{
+  "name": "la-justicia",
+  "displayName": "XI · La Justicia — revisa tu commit",
+  "description": "Antes de cada commit revisa lo que vas a subir (claves, archivos sensibles, restos de depuración, conflictos) y te propone el mensaje con Gemini. Nunca bloquea.",
+  "version": "0.1.0",
+  "publisher": "davidsant7e",
+  "license": "MIT",
+  "icon": "media/icono.png",
+  "repository": { "type": "git", "url": "https://github.com/davidsant7e/justicia" },
+  "engines": { "vscode": "^1.80.0" },
+  "categories": ["SCM Providers", "Linters", "Other"],
+  "keywords": ["git", "commit", "mensaje", "gemini", "conventional commits", "secretos"],
+  "main": "./extension.js",
+  "activationEvents": ["onStartupFinished"],
+  "extensionDependencies": ["vscode.git"],
+  "contributes": {
+    "commands": [
+      { "command": "justicia.sugerir", "title": "Revisar y sugerir mensaje", "category": "La Justicia", "icon": "$(law)" },
+      { "command": "justicia.revisar", "title": "Solo revisar lo que voy a subir", "category": "La Justicia" },
+      { "command": "justicia.configurarClave", "title": "Configurar clave de Gemini", "category": "La Justicia" },
+      { "command": "justicia.instalarGanchos", "title": "Instalar ganchos de git (Visual Studio y terminal)", "category": "La Justicia" }
+    ],
+    "menus": {
+      "scm/title": [
+        { "command": "justicia.sugerir", "when": "scmProvider == git", "group": "navigation@1" },
+        { "command": "justicia.revisar", "when": "scmProvider == git", "group": "justicia@1" },
+        { "command": "justicia.instalarGanchos", "when": "scmProvider == git", "group": "justicia@2" }
+      ]
+    },
+    "configuration": {
+      "title": "La Justicia",
+      "properties": {
+        "justicia.modelo": { "type": "string", "default": "gemini-3.5-flash-lite", "description": "Modelo de Gemini para escribir el mensaje." },
+        "justicia.idioma": { "type": "string", "enum": ["español", "inglés"], "default": "español", "description": "Idioma del mensaje de commit." },
+        "justicia.revisarAlCambiar": { "type": "boolean", "default": true, "description": "Revisar automáticamente cada vez que cambia lo que está en staging (avisos en «Problemas» y en la barra de estado)." }
+      }
+    }
+  }
+}
